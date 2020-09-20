@@ -50,7 +50,7 @@ func (w *InfluxWriter) WriteResults(results *monitor.Results) error {
 func thermostatTags(results *monitor.Results) map[string]string {
 	tags := make(map[string]string)
 	tags["device_type"] = results.Device.Type
-	tags["device_host"] = result.Device.Address
+	tags["device_host"] = results.Device.Address
 	tResults := results.Thermostat
 	if tResults.APIInfo != nil {
 		if tResults.APIInfo.Model != "" {
