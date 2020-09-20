@@ -10,7 +10,7 @@ type Monitor struct {
 	devices []*venstar.Device
 }
 
-func (m *Monitor) run(resultsChan chan *Results, errorsChan chan error) {
+func (m *Monitor) Run(resultsChan chan *Results, errorsChan chan error) {
 	var results *Results
 	var err error
 	for _, device := range m.devices {
@@ -31,7 +31,7 @@ func (m *Monitor) IntervalMonitor(interval time.Duration, resultsChan chan *Resu
 		case <-stopChan:
 			return
 		case <-ticker.C:
-			m.run(resultsChan, errorsChan)
+			m.Run(resultsChan, errorsChan)
 		}
 	}
 }
@@ -49,6 +49,10 @@ func (m *Monitor) Monitor(interval time.Duration, stopChan chan bool) (chan *Res
 
 type ResultsWriter interface {
 	WriteResults(*Results) error
+}
+
+type Server interface {
+	Serve() error
 }
 
 func New(devices ...*venstar.Device) *Monitor {
