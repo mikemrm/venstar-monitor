@@ -39,6 +39,14 @@ Flags:
   -t, --thermostat strings          One or more thermostat hosts to monitor
 ```
 
+## TODOs:
+
+- Add proper logging rather than simply printing
+- Add tests
+- Setup ci
+- Add dockerfile
+- Add sensors, runtimes and alerts to influx/prometheus outputs
+
 ## JSON Output
 
 ```shell
