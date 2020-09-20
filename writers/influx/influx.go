@@ -86,18 +86,18 @@ func thermostatFields(results *monitor.Results) map[string]interface{} {
 	}
 	if tResults.QueryInfo != nil {
 		fields["name"] = tResults.QueryInfo.Name
-		fields["mode"] = tResults.QueryInfo.Mode
-		fields["state"] = tResults.QueryInfo.State
-		fields["fan"] = tResults.QueryInfo.Fan
-		fields["fan_state"] = tResults.QueryInfo.FanState
-		fields["temp_units"] = tResults.QueryInfo.TempUnits
-		fields["schedule"] = tResults.QueryInfo.Schedule
-		fields["schedule_part"] = tResults.QueryInfo.SchedulePart
-		fields["away"] = tResults.QueryInfo.Away
-		fields["holiday"] = tResults.QueryInfo.Holiday
-		fields["override"] = tResults.QueryInfo.Override
-		fields["override_remaining"] = tResults.QueryInfo.OverrideRemaining
-		fields["force_unoccupied"] = tResults.QueryInfo.ForceUnoccupied
+		fields["mode"] = int(tResults.QueryInfo.Mode)
+		fields["state"] = int(tResults.QueryInfo.State)
+		fields["fan"] = int(tResults.QueryInfo.Fan)
+		fields["fan_state"] = int(tResults.QueryInfo.FanState)
+		fields["temp_units"] = int(tResults.QueryInfo.TempUnits)
+		fields["schedule"] = int(tResults.QueryInfo.Schedule)
+		fields["schedule_part"] = int(tResults.QueryInfo.SchedulePart)
+		fields["away"] = int(tResults.QueryInfo.Away)
+		fields["holiday"] = int(tResults.QueryInfo.Holiday)
+		fields["override"] = int(tResults.QueryInfo.Override)
+		fields["override_remaining"] = int(tResults.QueryInfo.OverrideRemaining)
+		fields["force_unoccupied"] = int(tResults.QueryInfo.ForceUnoccupied)
 		fields["space_temp"] = tResults.QueryInfo.SpaceTemp
 		fields["heat_temp"] = tResults.QueryInfo.HeatTemp
 		fields["cool_temp"] = tResults.QueryInfo.CoolTemp
@@ -106,12 +106,12 @@ func thermostatFields(results *monitor.Results) map[string]interface{} {
 		fields["heat_temp_min"] = tResults.QueryInfo.HeatTempMin
 		fields["heat_temp_max"] = tResults.QueryInfo.HeatTempMax
 		fields["active_stage"] = tResults.QueryInfo.ActiveStage
-		fields["humidity_enabled"] = tResults.QueryInfo.HumidityEnabled
+		fields["humidity_enabled"] = int(tResults.QueryInfo.HumidityEnabled)
 		fields["humidity"] = tResults.QueryInfo.Humidity
 		fields["humidity_setpoint"] = tResults.QueryInfo.HumidifySetPoint
 		fields["dehumidify_setpoint"] = tResults.QueryInfo.DehumidifySetPoint
 		fields["setpoint_delta"] = tResults.QueryInfo.SetPointDelta
-		fields["available_modes"] = tResults.QueryInfo.AvailableModes
+		fields["available_modes"] = int(tResults.QueryInfo.AvailableModes)
 	}
 	return fields
 }

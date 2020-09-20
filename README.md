@@ -70,14 +70,14 @@ $ ./venstar-monitor -t 192.168.1.102 -o influx \
 ```
 
 ```shell
-> select * from thermostat
-name: thermostat
-time                cool_temp fan fan_state heat_temp humidity name       name_1     space_temp state system_model system_type temp_units
-----                --------- --- --------- --------- -------- ----       ------     ---------- ----- ------------ ----------- ----------
-1600544695000000000 74        on  off       70        48       Thermostat Thermostat 74         idle  COLORTOUCH   commercial  fahrenheit
-1600544700000000000 74        on  off       70        48       Thermostat Thermostat 74         idle  COLORTOUCH   commercial  fahrenheit
-1600544705000000000 74        on  off       70        48       Thermostat Thermostat 74         idle  COLORTOUCH   commercial  fahrenheit
-1600544710000000000 74        on  off       70        48       Thermostat Thermostat 74         idle  COLORTOUCH   commercial  fahrenheit
+> select * from venstar_thermostat LIMIT 10;
+name: venstar_thermostat
+time                cool_temp device_host   fan fan_state heat_temp humidity mode name       name_1     space_temp state state_1 system_model system_type temp_units
+----                --------- -----------   --- --------- --------- -------- ---- ----       ------     ---------- ----- ------- ------------ ----------- ----------
+1600639582000000000 74        192.168.1.102 1   0         70        49       3    Thermostat Thermostat 75         0     idle    COLORTOUCH   commercial  0
+1600639587000000000 74        192.168.1.102 1   0         70        49       3    Thermostat Thermostat 75         0     idle    COLORTOUCH   commercial  0
+1600639592000000000 74        192.168.1.102 1   1         70        49       3    Thermostat Thermostat 76         2     cooling COLORTOUCH   commercial  0
+1600639597000000000 74        192.168.1.102 1   1         70        49       3    Thermostat Thermostat 76         2     cooling COLORTOUCH   commercial  0
 ```
 
 ## Prometheus Output
