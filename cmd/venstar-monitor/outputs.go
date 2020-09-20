@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/mikemrm/venstar-monitor"
+	"github.com/mikemrm/venstar-monitor/servers/prometheus"
 	"github.com/mikemrm/venstar-monitor/writers/influx"
 	"github.com/mikemrm/venstar-monitor/writers/jsonPrinter"
 )
@@ -17,6 +18,8 @@ var (
 	influxDatabase        string
 	influxMeasurement     string
 	influxRetentionPolicy string
+
+	promListenAddr string
 )
 
 func init() {
@@ -28,10 +31,13 @@ func init() {
 	rootCmd.Flags().StringVar(&influxRetentionPolicy, "influx.retention", "autogen", "InfluxDB retention policy")
 	rootCmd.Flags().StringVar(&influxUser, "influx.user", "", "InfluxDB authentication username")
 	rootCmd.Flags().StringVar(&influxPass, "influx.pass", "", "InfluxDB authentication password")
+
+	rootCmd.Flags().StringVar(&promListenAddr, "prometheus.listen", ":9872", "Prometheus exporter listen address")
 }
 
-func loadOutputs() []monitor.ResultsWriter {
+func loadOutputs(mon *monitor.Monitor) ([]monitor.ResultsWriter, map[string]monitor.Server) {
 	var monitors []monitor.ResultsWriter
+	servers := make(map[string]monitor.Server)
 	for _, sWriter := range outputFormats {
 		if sWriter == "json" {
 			output := getJSONOutput()
@@ -39,11 +45,13 @@ func loadOutputs() []monitor.ResultsWriter {
 		} else if sWriter == "influx" {
 			output := getInfluxOutput()
 			monitors = append(monitors, output)
+		} else if sWriter == "prometheus" {
+			servers["prometheus"] = getPrometheusOutput(mon)
 		} else {
 			fatal("Unknown output %s", sWriter)
 		}
 	}
-	return monitors
+	return monitors, servers
 }
 
 func getJSONOutput() *jsonPrinter.JSONWriter {
@@ -85,4 +93,21 @@ func getInfluxOutput() *influx.InfluxWriter {
 		fatal("failed to create influx writer: %s", err)
 	}
 	return writer
+}
+
+func getPrometheusOutput(mon *monitor.Monitor) monitor.Server {
+	if promListenAddr == "" {
+		fatal("prometheus.listen must be defined")
+	}
+
+	config := prometheus.Config{
+		Monitor:    mon,
+		ListenAddr: promListenAddr,
+	}
+
+	server, err := prometheus.NewServer(config)
+	if err != nil {
+		fatal("failed to create prometheus server: %s", err)
+	}
+	return server
 }
