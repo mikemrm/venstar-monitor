@@ -4,9 +4,17 @@ A monitoring solution for Venstar.
 
 ## Support outputs
 
+One or more of the following output formats may be defined, however only one of
+each can be used.
+
 * `json`: Dumps the results from querying the device to stdout.
 * `influx`: Writes the results to the specified influxdb host.
 * `prometheus`: Starts an http server so prometheus can scrape for metrics.
+
+Both `json` and `influx` output methods use interval monitoring while
+`prometheus` does pull based scraping, so there can be inconsistencies in
+values when comparing as it's unlikely the scrapes from the two approaches
+occur at the same time.
 
 ## Usage
 
@@ -31,7 +39,7 @@ Flags:
   -t, --thermostat strings          One or more thermostat hosts to monitor
 ```
 
-## JSON Example
+## JSON Output
 
 ```shell
 $ venstar-monitor -t 192.168.1.102 | jq -r '[
@@ -44,7 +52,7 @@ $ venstar-monitor -t 192.168.1.102 | jq -r '[
 192.168.1.102	2020-09-19T19:42:38.520766028Z	74	idle
 ```
 
-## InfluxDB Example
+## InfluxDB Output
 
 ```shell
 $ ./venstar-monitor -t 192.168.1.102 -o influx \
@@ -64,7 +72,7 @@ time                cool_temp fan fan_state heat_temp humidity name       name_1
 1600544710000000000 74        on  off       70        48       Thermostat Thermostat 74         idle  COLORTOUCH   commercial  fahrenheit
 ```
 
-## Prometheus Example
+## Prometheus Output
 
 ```shell
 $ ./venstar-monitor -t 192.168.1.102 -o prometheus
