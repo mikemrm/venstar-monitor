@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mikemrm/go-venstar"
+	"go.mrm.dev/venstar"
 	"github.com/mikemrm/venstar-monitor"
 	"github.com/spf13/cobra"
 )
