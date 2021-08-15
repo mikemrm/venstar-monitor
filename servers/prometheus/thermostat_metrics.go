@@ -1,7 +1,7 @@
 package prometheus
 
 import (
-	"github.com/mikemrm/venstar-monitor"
+	"go.mrm.dev/venstar-monitor"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 )

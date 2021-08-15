@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/mikemrm/go-venstar/thermostat"
+	"go.mrm.dev/venstar/thermostat"
 )
 
 type ThermostatResults struct {

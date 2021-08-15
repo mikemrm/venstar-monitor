@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/mikemrm/venstar-monitor"
+	"go.mrm.dev/venstar-monitor"
 )
 
 // JSONWriter implements monitor.ResultsWriter

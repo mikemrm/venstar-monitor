@@ -3,7 +3,7 @@ package monitor
 import (
 	"time"
 
-	"github.com/mikemrm/go-venstar"
+	"go.mrm.dev/venstar"
 	"github.com/pkg/errors"
 )
 
