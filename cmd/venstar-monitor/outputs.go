@@ -3,10 +3,10 @@ package main
 import (
 	"time"
 
-	"github.com/mikemrm/venstar-monitor"
-	"github.com/mikemrm/venstar-monitor/servers/prometheus"
-	"github.com/mikemrm/venstar-monitor/writers/influx"
-	"github.com/mikemrm/venstar-monitor/writers/jsonPrinter"
+	"go.mrm.dev/venstar-monitor"
+	"go.mrm.dev/venstar-monitor/servers/prometheus"
+	"go.mrm.dev/venstar-monitor/writers/influx"
+	"go.mrm.dev/venstar-monitor/writers/jsonPrinter"
 )
 
 var (

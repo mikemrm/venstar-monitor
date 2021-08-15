@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/influxdata/influxdb1-client/v2"
-	"github.com/mikemrm/venstar-monitor"
+	"go.mrm.dev/venstar-monitor"
 )
 
 type Config struct {

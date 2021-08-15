@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"go.mrm.dev/venstar"
-	"github.com/mikemrm/venstar-monitor"
+	"go.mrm.dev/venstar-monitor"
 	"github.com/spf13/cobra"
 )
 
