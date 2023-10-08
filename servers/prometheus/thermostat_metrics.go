@@ -1,9 +1,11 @@
 package prometheus
 
 import (
-	"go.mrm.dev/venstar-monitor"
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
+	monitor "go.mrm.dev/venstar-monitor"
 )
 
 func (c *venstarCollector) addThermostatDescriptions() {
@@ -161,6 +163,15 @@ func (c *venstarCollector) addThermostatDescriptions() {
 		"venstar_thermostat_available_modes",
 		"Thermostat available modes 0:all 1:heat/cool 2:heat 3:cool",
 		defaultVariableLabels,
+		nil,
+	)
+
+	querySensorLabels := append(defaultVariableLabels, "sensor")
+
+	c.descriptions["ThermostatQuerySensors"] = prometheus.NewDesc(
+		"venstar_thermostat_sensors",
+		"Thermostat sensor values",
+		querySensorLabels,
 		nil,
 	)
 }
@@ -410,7 +421,8 @@ func (c *venstarCollector) buildThermostatMetrics(results *monitor.Results) ([]p
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to create metric for QueryInfoAvailableModes")
 	}
-	return []prometheus.Metric{
+
+	metrics := []prometheus.Metric{
 		QueryInfoMode,
 		QueryInfoState,
 		QueryInfoFan,
@@ -437,5 +449,23 @@ func (c *venstarCollector) buildThermostatMetrics(results *monitor.Results) ([]p
 		QueryInfoDehumidifySetPoint,
 		QueryInfoSetPointDelta,
 		QueryInfoAvailableModes,
-	}, nil
+	}
+
+	for _, sensor := range tResults.Sensors {
+		sensorLabels := append(labelValues, sensor.Name)
+
+		metric, err := prometheus.NewConstMetric(
+			c.descriptions["ThermostatQuerySensors"],
+			prometheus.GaugeValue,
+			sensor.Temp,
+			sensorLabels...,
+		)
+		if err != nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("Failed to create metric for ThermostatQuerySensors: %s = %v", sensor.Name, sensor.Temp))
+		}
+
+		metrics = append(metrics, metric)
+	}
+
+	return metrics, nil
 }
