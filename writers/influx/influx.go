@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/influxdata/influxdb1-client/v2"
-	"go.mrm.dev/venstar-monitor"
+	client "github.com/influxdata/influxdb1-client/v2"
+	monitor "go.mrm.dev/venstar-monitor"
 )
 
 type Config struct {
@@ -41,7 +41,7 @@ func (w *InfluxWriter) WriteResults(results *monitor.Results) error {
 			return err
 		}
 	} else {
-		fmt.Fprintln(os.Stderr, "Unable to write influx points for unrecognized device type: %s", results.Device.Type)
+		fmt.Fprintf(os.Stderr, "Unable to write influx points for unrecognized device type: %s\n", results.Device.Type)
 	}
 	bp.AddPoint(point)
 	return w.client.Write(bp)
