@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - binary: venstar-monitor
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+dockers:
+  - use: buildx
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:v{{ .Version }}-amd64"
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:latest-amd64"
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+  - use: buildx
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:v{{ .Version }}-arm64"
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:latest-arm64"
+    build_flag_templates:
+      - "--platform=linux/arm64/v8"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+docker_manifests:
+  - name_template: ghcr.io/mikemrm/{{ .ProjectName }}:v{{ .Version }}
+    image_templates:
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:v{{ .Version }}-amd64"
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:v{{ .Version }}-arm64"
+  - name_template: ghcr.io/mikemrm/{{ .ProjectName }}:latest
+    image_templates:
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:latest-amd64"
+      - "ghcr.io/mikemrm/{{ .ProjectName }}:latest-arm64"
+
+checksum:
+  name_template: 'checksums.txt'
