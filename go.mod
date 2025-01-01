@@ -3,7 +3,7 @@ module go.mrm.dev/venstar-monitor
 go 1.23
 
 require (
-	github.com/influxdata/influxdb1-client v0.0.0-20200827194710-b269163b24ab
+	github.com/influxdata/influxdb1-client v0.0.0-20220302092344-a9ab5670611c
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.20.5
 	github.com/spf13/cobra v1.2.1
